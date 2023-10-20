@@ -79,15 +79,26 @@ export async function POST(req: NextRequest) {
     const currentMessageContent = messages[messages.length - 1].content;
 
     const model = new ChatOpenAI({
-      modelName: "gpt-3.5-turbo",
-      temperature: 0.2
+      openAIApiKey: process.env.OAI_API_KEY,
+      // modelName: "gpt-3.5-turbo",
+      temperature: 0.2,
+      configuration: {
+        baseURL: process.env.OAI_BASE_PATH,
+      },
     });
 
     const client = createClient(
       process.env.SUPABASE_URL!,
       process.env.SUPABASE_PRIVATE_KEY!,
     );
-    const vectorstore = new SupabaseVectorStore(new OpenAIEmbeddings(), {
+    const vectorstore = new SupabaseVectorStore(new OpenAIEmbeddings(
+      {
+        openAIApiKey: process.env.OAI_API_KEY,
+      },
+      {
+        baseURL: process.env.OAI_BASE_PATH
+      }
+    ), {
       client,
       tableName: "documents",
       queryName: "match_documents",

@@ -34,6 +34,10 @@ export async function POST(req: NextRequest) {
      * Function calling is currently only supported with ChatOpenAI models
      */
     const model = new ChatOpenAI({
+      openAIApiKey: process.env.OAI_API_KEY,
+      configuration: {
+        baseURL: process.env.OAI_BASE_PATH,
+      },
       temperature: 0.8,
       modelName: "gpt-4",
     });

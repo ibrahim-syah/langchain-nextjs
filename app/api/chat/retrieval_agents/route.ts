@@ -53,6 +53,10 @@ export async function POST(req: NextRequest) {
 
     const model = new ChatOpenAI({
       modelName: "gpt-4",
+      openAIApiKey: process.env.OAI_API_KEY,
+      configuration: {
+        baseURL: process.env.OAI_BASE_PATH,
+      },
     });
 
     const client = createClient(
